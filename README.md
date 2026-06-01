@@ -121,7 +121,8 @@ Built on the **Chinook database** — an open-source SQLite database representin
 
 ## Tech Stack
 
-- `langchain-anthropic` — LLM provider
+- `langchain-anthropic` — LangChain integration for Anthropic's Claude models
+- `Anthropic APIs`
 - `deepagents` — multi-agent harness (`create_deep_agent`)
 - `langgraph` — agent graph execution and HITL
 - `langsmith` — observability, tracing, and evals
