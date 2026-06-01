@@ -2,10 +2,6 @@
 
 A recommendation-driven sales engine that converts buying signals into purchases. Built on a production-ready, scalable, agentic architecture.
 
-## Demo
-
-> Coming soon
-
 ---
 
 ## How it works
