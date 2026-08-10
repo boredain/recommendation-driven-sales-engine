@@ -76,7 +76,7 @@ When a customer asks "do you have music by [artist]?" the agent runs two paralle
 - **Your Library** — tracks the customer already owns matching the request
 - **Available to Purchase** — unowned catalog tracks matching the request
 
-If zero unowned results are found, falls back to the `similar_music` subagent.
+The reply always has to contain something buyable. If the unowned query returns zero rows — for example because the customer named a track they already own — `general_query` retries it in Python scoped to that artist, then that genre, and if all of those come back empty it invokes the `similar_music` subagent itself and returns its output for verbatim passthrough. The fallback is code-driven, so it cannot be reasoned away by the model.
 
 ### 4. General Inquiry
 Handles account details, invoice history, track information, support rep lookups, and purchase patterns via dynamic SQL generation. Guardrailed at the tool level to only ever query data belonging to the authenticated customer.
@@ -103,6 +103,7 @@ All prompt versions are centralized in `config.py`. Changing a version in one pl
 **Eval suite**
 - `evals/routing.py` — verifies the main agent routes each query type to the correct tool or subagent. Run different system prompt versions via `python evals/routing.py system/system_v2` to compare routing accuracy.
 - `evals/recommendations.py` — tests recommendations subagent output quality across prompt versions.
+- `evals/catalog_availability.py` — regression cases for the catalog availability flow: every reply must surface a priced purchasable track in the same turn, with no deferral question and no "nothing to purchase" dead end.
 
 **Authentication**
 The demo hardcodes `CustomerId = 5`. The production upgrade path extracts the `CustomerId` from a JWT token on each request and injects it into the agent via a user-scoped `MemoryMiddleware` with `(user_id,)` as the namespace — ensuring every query is strictly scoped to the authenticated customer.
