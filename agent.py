@@ -7,7 +7,10 @@ from tools.get_schema import get_schema
 from tools.purchase_track import purchase_track
 from tools.catalog_search import catalog_search
 from subagents.music_profile import music_profile_subagent
-from subagents.recommendations import recommendations_subagent
+from subagents.recommendations import (
+    RecommendationsOutputGuardMiddleware,
+    recommendations_subagent,
+)
 from subagents.similar_music import similar_music_subagent
 
 
@@ -21,4 +24,5 @@ def make_graph():
             {**recommendations_subagent, "system_prompt": load_prompt(RECOMMENDATIONS_VERSION)},
             {**music_profile_subagent, "system_prompt": load_prompt(MUSIC_PROFILE_VERSION)},
         ],
+        middleware=[RecommendationsOutputGuardMiddleware()],
     )
