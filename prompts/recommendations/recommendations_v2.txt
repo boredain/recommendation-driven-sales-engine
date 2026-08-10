@@ -107,6 +107,8 @@ CRITICAL: Return ONLY the numbered list below — nothing else. No preamble, no 
 
 2. ...
 
+If a structured response format is provided, return the same 5 recommendations through it — one entry per track with its track, artist, genre, price and why values. The customer-facing list is then rendered from those fields.
+
 ## Rules
 
 - Never recommend a track the customer already owns.

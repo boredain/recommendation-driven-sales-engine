@@ -103,6 +103,7 @@ All prompt versions are centralized in `config.py`. Changing a version in one pl
 **Eval suite**
 - `evals/routing.py` — verifies the main agent routes each query type to the correct tool or subagent. Run different system prompt versions via `python evals/routing.py system/system_v2` to compare routing accuracy.
 - `evals/recommendations.py` — tests recommendations subagent output quality across prompt versions.
+- `evals/relay.py` — verifies the main agent relays the recommendations list intact: one `Genre:` and one `Why:` line per entry, and no entries collapsed onto a single line.
 
 **Authentication**
 The demo hardcodes `CustomerId = 5`. The production upgrade path extracts the `CustomerId` from a JWT token on each request and injects it into the agent via a user-scoped `MemoryMiddleware` with `(user_id,)` as the namespace — ensuring every query is strictly scoped to the authenticated customer.

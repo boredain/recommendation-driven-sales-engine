@@ -16,7 +16,7 @@ from deepagents import create_deep_agent
 # import all four prompt versions — needed because this eval builds the full agent with all subagents
 from config import SYSTEM_VERSION, RECOMMENDATIONS_VERSION, SIMILAR_MUSIC_VERSION, MUSIC_PROFILE_VERSION
 from utils import load_prompt
-from subagents.recommendations import recommendations_subagent
+from subagents.recommendations import build_recommendations_subagent
 from subagents.similar_music import similar_music_subagent
 from subagents.music_profile import music_profile_subagent
 from tools.general_query import general_query
@@ -37,7 +37,10 @@ agent = create_deep_agent(
     tools=[general_query, get_schema, purchase_track, catalog_search],
     subagents=[
         {**similar_music_subagent, "system_prompt": load_prompt(SIMILAR_MUSIC_VERSION)},
-        {**recommendations_subagent, "system_prompt": load_prompt(RECOMMENDATIONS_VERSION)},
+        build_recommendations_subagent(
+            load_prompt(RECOMMENDATIONS_VERSION),
+            [general_query, get_schema, catalog_search],
+        ),
         {**music_profile_subagent, "system_prompt": load_prompt(MUSIC_PROFILE_VERSION)},
     ],
 )
